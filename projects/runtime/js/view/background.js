@@ -18,6 +18,7 @@ var background = function (window) {
 
        // container which will be returned
        var background;
+       var tree;
 
        // Add any variables that will be used by render AND update here:
 
@@ -55,12 +56,19 @@ background.addChild(moon);
 
 
            // TODO 4: Part 1 - Add a tree
-
+            tree = draw.bitmap('img/tree.png');
+tree.x = 420;
+tree.y = 150;
+background.addChild(tree);
        }
 
        // Perform background animation
        // called on each timer "tick" - 60 times per second
        function update() {
+           tree.x = tree.x + -1;
+           if(tree.x < -200) {
+    tree.x = canvasWidth;
+}
            // useful variables
            var canvasWidth = app.canvas.width;
            var canvasHeight = app.canvas.height;
