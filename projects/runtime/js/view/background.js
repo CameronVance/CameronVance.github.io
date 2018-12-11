@@ -1,6 +1,5 @@
 var background = function (window) {
    'use strict';
-
    window.opspark = window.opspark || {};
    var draw = window.opspark.draw;
    var createjs = window.createjs;
@@ -19,12 +18,13 @@ var background = function (window) {
        // container which will be returned
        var background;
        var tree;
-
+       var buildings = [];
        // Add any variables that will be used by render AND update here:
 
        // add objects for display inb ackground
        // called at the start of game and whenever the page is resized
        function render() {
+
            // useful variables
            var canvasWidth = app.canvas.width;
            var canvasHeight = app.canvas.height;
@@ -34,50 +34,65 @@ var background = function (window) {
 
            // this fills the background with a obnoxious yellow
            // you should modify this to suit your game
-           var backgroundFill = draw.rect(canvasWidth,ground.y,'red');
+           var backgroundFill = draw.rect(canvasWidth,ground.y,'black');
            background.addChild(backgroundFill);
 
            // TODO: 3 - Add a moon and starfield
-var circle;
-for(var i=0;i<100;i++) {
-    circle = draw.circle(10,'white','LightGray',2);
-    circle.x = canvasWidth*Math.random();
-    circle.y = groundY*Math.random();
-    background.addChild(circle);
-}
-var moon = draw.bitmap('img/moon.png');
-moon.x = 0;
-moon.y = 0;
-moon.scaleX = 0.2;
-moon.scaleY = 0.2;
-background.addChild(moon);
-
+           var circle;
+           for(var i=0;i<100;i++) {
+               circle = draw.circle(10, 'white', 'LightGray',2);
+               circle.x = canvasWidth*Math.random();
+               circle.y = groundY*Math.random();
+               background.addChild(circle);
+           }
+            var moon = draw.bitmap('img/moon.png');
+            moon.x = 40;
+            moon.y = 25;
+            moon.scaleX = 0.3;
+            moon.scaleY = 0.3;
+            background.addChild(moon);
            // TODO: 5 - Add buildings!     Q: This is before TODO 4 for a reason! Why?
+           var buildingHeight = 300;
+           var building;
+           for(var i=0;i<5;++i) {
+               building = draw.rect(75,buildingHeight,'LightGray','Black',1);
+               building.x = 200*i;
+               building.y = groundY-buildingHeight;
+               background.addChild(building);
+               buildings.push(building);
+           }
 
 
            // TODO 4: Part 1 - Add a tree
-            tree = draw.bitmap('img/tree.png');
-tree.x = 420;
-tree.y = 150;
-background.addChild(tree);
+           tree = draw.bitmap('img/tree.png');
+           tree.x = 420;
+           tree.y = 150;
+           background.addChild(tree);
        }
 
        // Perform background animation
        // called on each timer "tick" - 60 times per second
        function update() {
-           tree.x = tree.x + -1;
-           if(tree.x < -200) {
-    tree.x = canvasWidth;
-}
            // useful variables
            var canvasWidth = app.canvas.width;
            var canvasHeight = app.canvas.height;
            var groundY = ground.y;
 
            // TODO 4: Part 2 - Move the tree!
-
-
+           tree.x = tree.x - 1;
+            if(tree.x < -200) {
+               tree.x = canvasWidth;
+           }
            // TODO 5: Part 2 - Parallax
+           console.log (buildings)
+           for(var i=0; i <= buildings.length -1; i++) {
+               buildings[i].x= buildings[i].x -3;
+               if(buildings[i].x < -200) {
+                   buildings[i].x = canvasWidth;
+               }
+           }
+
+
 
 
        }
@@ -100,3 +115,4 @@ if((typeof process !== 'undefined') &&
    // here, export any references you need for tests //
    module.exports = background;
 }
+  
